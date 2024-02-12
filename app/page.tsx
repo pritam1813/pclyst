@@ -1,10 +1,16 @@
 import Link from "next/link";
+import { Button } from "@nextui-org/react";
+import ThemeSwitcher from "./components/ThemeSwitcher";
 
 export default function Home() {
   return (
     <main className="container mx-auto">
       {/* Banner Component */}
-      <section>{/* <BannerCard /> */}</section>
+      <section>
+        {/* <BannerCard /> */}
+        <Button>Submit</Button>
+      </section>
+      <ThemeSwitcher />
 
       {/* Advertisement Component */}
       <section className="pt-12">{/* <Advertisement /> */}</section>
