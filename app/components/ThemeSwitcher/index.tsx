@@ -19,7 +19,7 @@ const ThemeSwitcher = () => {
   return (
     <Switch
       defaultSelected={theme === "dark"}
-      size="lg"
+      size="md"
       thumbIcon={({ isSelected, className }) =>
         isSelected ? (
           <SunIcon className={className} />

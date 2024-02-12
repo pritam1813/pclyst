@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { Button } from "@nextui-org/react";
-import ThemeSwitcher from "./components/ThemeSwitcher";
 
 export default function Home() {
   return (
@@ -10,7 +9,6 @@ export default function Home() {
         {/* <BannerCard /> */}
         <Button>Submit</Button>
       </section>
-      <ThemeSwitcher />
 
       {/* Advertisement Component */}
       <section className="pt-12">{/* <Advertisement /> */}</section>
