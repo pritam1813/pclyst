@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { User } from "@nextui-org/react";
+import { Button, Chip, User } from "@nextui-org/react";
+
+import PostCard from "./components/PostCard";
 
 export default function Home() {
   return (
@@ -16,9 +18,9 @@ export default function Home() {
             className="rounded-xl w-full"
           />
           <div className="absolute -bottom-16 left-4 md:left-14 rounded-xl p-4 md:p-10  w-10/12 md:w-7/12 lg:w-6/12 shadow-xl bg-zinc-50 dark:bg-zinc-900 dark:shadow-zinc-800 ">
-            <div className="w-fit px-2.5 py-1 bg-blue-500 rounded-full text-xs md:text-sm text-white mb-4 font-medium">
+            <Chip color="primary" className="mb-4">
               Technology
-            </div>
+            </Chip>
             <h3>
               <a
                 className=" font-semibold text-xl md:text-2xl lg:text-4xl leading-5 md:leading-10 group transition-all duration-300 ease-in-out"
@@ -55,25 +57,27 @@ export default function Home() {
       </section>
 
       {/* Advertisement Component */}
-      <section className="pt-12">{/* <Advertisement /> */}</section>
+      {/* <section className="pt-12"><Advertisement /> </section>*/}
 
       {/* Latest Post */}
       <section className="my-20">
         <h3 className="text-base-content font-bold text-2xl mb-8 font-work leading-8">
-          Latest Post
+          Latest Posts
         </h3>
         <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {/* {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item: any) => (
-                  <PostCard key={item} />
-               ))} */}
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item: any) => (
+            <PostCard key={item} />
+          ))}
         </div>
         <div className="flex items-center justify-center w-full mt-8">
-          <Link
-            href={`/blog`}
-            className="btn btn-outline btn-secondary text-secondary-content/60 font-work font-medium text-base"
+          <Button
+            href="/blog"
+            variant="bordered"
+            as={Link}
+            className="hover:bg-zinc-50 dark:hover:bg-zinc-900"
           >
             View All Post
-          </Link>
+          </Button>
         </div>
       </section>
 
