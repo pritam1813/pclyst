@@ -71,7 +71,7 @@ export default function Home() {
         </div>
         <div className="flex items-center justify-center w-full mt-8">
           <Button
-            href="/blog"
+            href="/posts"
             variant="bordered"
             as={Link}
             className="hover:bg-zinc-50 dark:hover:bg-zinc-900"
