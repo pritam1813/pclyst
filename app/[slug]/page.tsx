@@ -42,7 +42,13 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
                   }}
                 />
               </div>
-              <p className="text-xs md:text-sm">{date}</p>
+              <p className="text-xs md:text-sm">
+                {new Date(date).toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </p>
             </div>
           </div>
 

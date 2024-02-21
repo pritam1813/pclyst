@@ -4,14 +4,41 @@ import { Button, Chip, User } from "@nextui-org/react";
 
 import PostCard from "./components/PostCard";
 
-export default function Home() {
+interface Post {
+  slug: string;
+  coverImage: {
+    url: string;
+    altText: string;
+  };
+  date: string;
+  title: string;
+  author: {
+    name: string;
+    social: {
+      name: string;
+      url: string;
+    };
+    picture: {
+      url: string;
+    };
+  };
+  category: string;
+}
+
+export default async function Home() {
+  let postsLimit = 6;
+  const res = await fetch(
+    `http://localhost:3000/api/posts?limit=${postsLimit}`
+  );
+  const data = await res.json();
+
   return (
     <main className="container mx-auto">
       {/* Banner Component */}
       <section>
         <div className="relative mb-24 rounded-xl dark:shadow-zinc-800 shadow-lg">
           <Image
-            src="/pexels-josh-sorenson-1714208.jpg"
+            src={data.posts[0].coverImage.url}
             alt="Main Banner Image"
             width={1216}
             height={600}
@@ -22,17 +49,16 @@ export default function Home() {
               Technology
             </Chip>
             <h3>
-              <a
-                className=" font-semibold text-xl md:text-2xl lg:text-4xl leading-5 md:leading-10 group transition-all duration-300 ease-in-out"
-                href="/"
+              <Link
+                className="font-semibold text-xl md:text-2xl lg:text-4xl leading-5 md:leading-10 group transition-all duration-300 ease-in-out"
+                href={data.posts[0].slug}
               >
                 <span className="bg-left-bottom bg-gradient-to-r from-blue-600 to-purple-600 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                  The Impact of Technology on the Workplace: How Technology is
-                  Changing
+                  {data.posts[0].title}
                 </span>
-              </a>
+              </Link>
             </h3>
-            <div className="mt-6 flex items-center gap-5">
+            <div className="mt-6 flex items-center justify-between gap-5">
               <div className=" flex items-center gap-3">
                 <div className="avatar">
                   <User
@@ -49,7 +75,11 @@ export default function Home() {
                 </div>
               </div>
               <p className="text-base-content/60 text-xs md:text-base">
-                August 20, 2022
+                {new Date(data.posts[0].date).toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
               </p>
             </div>
           </div>
@@ -65,9 +95,33 @@ export default function Home() {
           Latest Posts
         </h3>
         <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item: any) => (
-            <PostCard key={item} />
-          ))}
+          {data.posts.map((post: Post, index: number) => {
+            return (
+              <PostCard
+                key={index}
+                post={{
+                  title: post.title,
+                  slug: post.slug,
+                  coverImage: {
+                    url: post.coverImage.url,
+                    altText: "Temp Alttext",
+                  },
+                  author: {
+                    name: "John Doe",
+                    social: {
+                      url: "https://x.com",
+                      name: "@Johndoe",
+                    },
+                    picture: {
+                      url: "https://media.graphassets.com/E0UoOkHpTuuZjJ3qsFOl",
+                    },
+                  },
+                  date: post.date,
+                  category: "Technology",
+                }}
+              />
+            );
+          })}
         </div>
         <div className="flex items-center justify-center w-full mt-8">
           <Button
