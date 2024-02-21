@@ -4,17 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export function generateStaticParams() {
-  return [
-    { slug: "how-to-unpair-apple-watch" },
-    { slug: "best-amazon-black-friday-deals" },
-    { slug: "uninstall-linux-apps-on-chromebook" },
-  ];
-}
-
-const SinglePost = ({ params }: { params: { slug: string } }) => {
+const SinglePost = async ({ params }: { params: { slug: string } }) => {
   const category = "Gaming";
-  const slug = params.slug;
+  const res = await fetch(`http://localhost:3000/api/posts/${params.slug}`);
+  const data = await res.json();
+  const { title, date, coverImage } = data.post;
+
   return (
     <main>
       <section>
@@ -25,7 +20,7 @@ const SinglePost = ({ params }: { params: { slug: string } }) => {
               {category}
             </Chip>
             <h1 className=" font-semibold text-xl md:text-2xl lg:text-4xl leading-5 md:leading-10 ">
-              {slug}
+              {title}
             </h1>
 
             <div className="mt-3 md:mt-6 flex items-center gap-5">
@@ -42,7 +37,7 @@ const SinglePost = ({ params }: { params: { slug: string } }) => {
                   }}
                 />
               </div>
-              <p className="text-xs md:text-sm">August 20, 2022</p>
+              <p className="text-xs md:text-sm">{date}</p>
             </div>
           </div>
 
@@ -56,11 +51,12 @@ const SinglePost = ({ params }: { params: { slug: string } }) => {
               }
             >
               <Image
-                src="/alienware-Hpaq-kBcYHk-unsplash.jpg"
+                src={coverImage.url}
                 alt="Featured Image of the post"
                 width={800}
                 height={462}
                 priority
+                className="w-full h-full"
               />
             </Suspense>
           </div>
