@@ -9,6 +9,8 @@ interface Post {
   };
   date: string;
   title: string;
+  content: {};
+  author: {};
 }
 
 export async function GET(
@@ -25,6 +27,16 @@ export async function GET(
             }
             date
             title
+            content {
+              json
+            }
+            author {
+              name
+              picture {
+                altText
+                url
+              }
+            }
           }
         }
         `

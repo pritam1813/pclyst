@@ -1,14 +1,19 @@
 import { Suspense } from "react";
-import { Chip, Skeleton, User } from "@nextui-org/react";
+import { Chip, Skeleton, User, Code, Link, Snippet } from "@nextui-org/react";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
+import { RichText } from "@graphcms/rich-text-react-renderer";
+import { notFound } from "next/navigation";
 
 const SinglePost = async ({ params }: { params: { slug: string } }) => {
   const category = "Gaming";
   const res = await fetch(`http://localhost:3000/api/posts/${params.slug}`);
   const data = await res.json();
-  const { title, date, coverImage } = data.post;
+
+  if (!data.post) {
+    notFound();
+  }
+  const { title, date, coverImage, content, author } = data.post;
 
   return (
     <main>
@@ -23,17 +28,17 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
               {title}
             </h1>
 
-            <div className="mt-3 md:mt-6 flex items-center gap-5">
+            <div className="mt-3 md:mt-6 flex justify-between items-center gap-5">
               <div className="flex items-center gap-3">
                 <User
-                  name="Junior Garcia"
+                  name={author.name}
                   description={
                     <Link href="https://twitter.com/jrgarciadev">
                       @jrgarciadev
                     </Link>
                   }
                   avatarProps={{
-                    src: "https://avatars.githubusercontent.com/u/30373425?v=4",
+                    src: author.picture.url,
                   }}
                 />
               </div>
@@ -63,18 +68,42 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
 
           {/* Post Content */}
           <div className="my-8">
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-            </p>
+            <RichText
+              content={content.json}
+              renderers={{
+                p: ({ children }) => (
+                  <p className="text-xl leading-8 my-4">{children}</p>
+                ),
+                h2: ({ children }) => (
+                  <h2 className="text-2xl leading-7 font-semibold mt-8 mb-4">
+                    {children}
+                  </h2>
+                ),
+                h3: ({ children }) => (
+                  <h3 className="text-xl leading-7 font-semibold mt-8 mb-4">
+                    {children}
+                  </h3>
+                ),
+                code_block: ({ children }) => (
+                  <Snippet size="md" className="my-4">
+                    {children}
+                  </Snippet>
+                ),
+                a: ({ children, href, openInNewTab }) => (
+                  <Link
+                    showAnchorIcon={openInNewTab}
+                    href={href}
+                    isExternal={openInNewTab}
+                  >
+                    {children}
+                  </Link>
+                ),
+                code: ({ children }) => <Code size="md">{children}</Code>,
+                ul: ({ children }) => (
+                  <ul className="list-disc list-inside">{children}</ul>
+                ),
+              }}
+            />
           </div>
         </div>
       </section>
