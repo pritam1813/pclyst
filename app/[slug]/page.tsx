@@ -5,9 +5,55 @@ import React from "react";
 import { RichText } from "@graphcms/rich-text-react-renderer";
 import { notFound } from "next/navigation";
 
+export async function generateStaticParams() {
+  const data = await fetch(`${process.env.VERCEL_URL}/api/posts`).then((res) =>
+    res.json()
+  );
+
+  return data.posts.map((post: { slug: string }) => {
+    slug: post.slug;
+  });
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const res = await fetch(`${process.env.VERCEL_URL}/api/posts/${params.slug}`);
+  const data = await res.json();
+  let title = "Pclyst";
+  let description = "Post not found. 404 error.";
+  let ogImageUrl = "https://media.graphassets.com/E0UoOkHpTuuZjJ3qsFOl";
+
+  if (data.post) {
+    title = data.post.seoOverride.title;
+    description = data.post.seoOverride.description;
+    ogImageUrl = data.post.seoOverride.image.url;
+  }
+
+  return {
+    metadataBase: new URL(`${process.env.VERCEL_URL}`),
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `${process.env.VERCEL_URL}/${params.slug}`,
+      siteName: "Pclyst",
+      images: [
+        {
+          url: ogImageUrl,
+        },
+      ],
+    },
+  };
+}
+
 const SinglePost = async ({ params }: { params: { slug: string } }) => {
+  const { slug } = params;
   const category = "Gaming";
-  const res = await fetch(`http://localhost:3000/api/posts/${params.slug}`);
+  const res = await fetch(`${process.env.VERCEL_URL}/api/posts/${slug}`);
   const data = await res.json();
 
   if (!data.post) {
@@ -18,7 +64,7 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
   return (
     <main>
       <section>
-        <div className="mx-auto px-5 md:px-0 w-full md:w-10/12 lg:w-5/12">
+        <div className="mx-auto px-5 md:px-0 w-full md:w-10/12 lg:w-6/12">
           {/* Page Header */}
           <div className="py-5">
             <Chip color="primary" className="mb-2 md:mb-4">
@@ -33,8 +79,8 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
                 <User
                   name={author.name}
                   description={
-                    <Link href="https://twitter.com/jrgarciadev">
-                      @jrgarciadev
+                    <Link href={author.twitterProfileLink}>
+                      {author.twitterName}
                     </Link>
                   }
                   avatarProps={{
@@ -63,7 +109,7 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
             >
               <Image
                 src={coverImage.url}
-                alt="Featured Image of the post"
+                alt={coverImage.altText ? coverImage.altText : "Featured Image"}
                 width={800}
                 height={462}
                 priority
@@ -108,6 +154,20 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
                 ul: ({ children }) => (
                   <ul className="list-disc list-inside">{children}</ul>
                 ),
+                ol: ({ children }) => (
+                  <ol className="list-decimal list-inside">{children}</ol>
+                ),
+                img: ({ src, altText, width, height }) => (
+                  <div className="flex justify-center">
+                    <Image
+                      src={src!}
+                      alt={altText!}
+                      width={width}
+                      height={height}
+                      className="max-w-72"
+                    />
+                  </div>
+                ),
               }}
             />
           </div>
@@ -117,5 +177,4 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
   );
 };
 
-export const dynamicParams = false;
 export default SinglePost;

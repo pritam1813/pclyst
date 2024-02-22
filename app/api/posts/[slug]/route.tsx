@@ -24,6 +24,7 @@ export async function GET(
           post(where: {slug: "${params.slug}"}) {
             coverImage {
               url
+              altText
             }
             date
             title
@@ -32,11 +33,20 @@ export async function GET(
             }
             author {
               name
+              twitterName
+              twitterProfileLink
               picture {
-                altText
                 url
               }
             }
+            seoOverride {
+              title
+              description
+              image {
+                url
+              }
+            }
+            category
           }
         }
         `
