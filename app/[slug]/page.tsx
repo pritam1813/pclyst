@@ -4,15 +4,50 @@ import Image from "next/image";
 import React from "react";
 import { RichText } from "@graphcms/rich-text-react-renderer";
 import { notFound } from "next/navigation";
+import hygraph from "../lib/hygraph";
+
+interface PostSlug {
+  slug: string;
+}
+
+interface Post {
+  title: string;
+  content: { json: any };
+  author: {
+    name: string;
+    twitterName: string;
+    twitterProfile: string;
+    twitterProfileLink: string;
+    picture: { url: string };
+  };
+  coverImage: {
+    url: string;
+    altText: string;
+  };
+  date: string;
+  category: string;
+}
+
+interface postSeo {
+  seoOverride: {
+    title: string;
+    description: string;
+    image: { url: string };
+  };
+}
 
 export async function generateStaticParams() {
-  const data = await fetch(`${process.env.VERCEL_URL}/api/posts`).then((res) =>
-    res.json()
+  const { posts }: { posts: PostSlug[] } = await hygraph.request(
+    `{
+      posts(orderBy: createdAt_DESC) {
+        slug
+      }
+    }`
   );
 
-  return data.posts.map((post: { slug: string }) => {
-    slug: post.slug;
-  });
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
 }
 
 export async function generateMetadata({
@@ -20,16 +55,29 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }) {
-  const res = await fetch(`${process.env.VERCEL_URL}/api/posts/${params.slug}`);
-  const data = await res.json();
+  const { post }: { post: postSeo } = await hygraph.request(
+    `
+    {
+      post(where: {slug: "${params.slug}"}) {
+        seoOverride {
+          title
+          description
+          image {
+            url
+          }
+        }
+      }
+    }
+    `
+  );
   let title = "Pclyst";
   let description = "Post not found. 404 error.";
-  let ogImageUrl = "https://media.graphassets.com/E0UoOkHpTuuZjJ3qsFOl";
+  let ogImageUrl = "https://media.graphassets.com/ZqUATlcgTCyLQCWQN21n";
 
-  if (data.post) {
-    title = data.post.seoOverride.title;
-    description = data.post.seoOverride.description;
-    ogImageUrl = data.post.seoOverride.image.url;
+  if (post) {
+    title = post.seoOverride.title;
+    description = post.seoOverride.description;
+    ogImageUrl = post.seoOverride.image.url;
   }
 
   return {
@@ -51,15 +99,35 @@ export async function generateMetadata({
 }
 
 const SinglePost = async ({ params }: { params: { slug: string } }) => {
-  const { slug } = params;
-  const category = "Gaming";
-  const res = await fetch(`${process.env.VERCEL_URL}/api/posts/${slug}`);
-  const data = await res.json();
+  const { post }: { post: Post } = await hygraph.request(
+    `{
+      post(where: {slug: "${params.slug}"}) {
+        coverImage {
+          url
+          altText
+        }
+        date
+        content {
+          json
+        }
+        author {
+          name
+          twitterName
+          twitterProfileLink
+          picture {
+            url
+          }
+        }
+        title
+        category
+      }
+    }`
+  );
 
-  if (!data.post) {
+  if (!post) {
     notFound();
   }
-  const { title, date, coverImage, content, author } = data.post;
+  const { title, date, coverImage, content, author, category } = post;
 
   return (
     <main>
@@ -157,11 +225,11 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
                 ol: ({ children }) => (
                   <ol className="list-decimal list-inside">{children}</ol>
                 ),
-                img: ({ src, altText, width, height }) => (
+                img: ({ src, width, height, title }) => (
                   <div className="flex justify-center">
                     <Image
                       src={src!}
-                      alt={altText!}
+                      alt={title!}
                       width={width}
                       height={height}
                       className="max-w-72"

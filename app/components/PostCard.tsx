@@ -28,13 +28,13 @@ const PostCard = ({ post }: { post: Post }) => {
   const { title, slug, category, coverImage, date, author } = post;
   return (
     <Card>
-      <CardBody>
+      <CardBody className="justify-between">
         <Image
           src={coverImage.url}
           alt={coverImage.altText}
           width={360}
           height={240}
-          className="rounded-xl w-full"
+          className="rounded-xl w-full h-[240px]"
         />
 
         <div className="pt-6 pb-3 px-2">

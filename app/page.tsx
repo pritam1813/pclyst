@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button, Chip, User } from "@nextui-org/react";
-
+import hygraph from "./lib/hygraph";
 import PostCard from "./components/PostCard";
 
 interface Post {
@@ -27,22 +27,41 @@ interface Post {
 
 export default async function Home() {
   let postsLimit = 6;
-  const res = await fetch(
-    `http://localhost:3000/api/posts?limit=${postsLimit}`
+
+  const { posts }: { posts: Post[] } = await hygraph.request(
+    `
+        {
+          posts(first: ${postsLimit}, orderBy: createdAt_DESC) {
+              slug
+              title
+              date
+              author {
+                name
+                picture {
+                  url
+                }
+              }
+              coverImage {
+                url
+                altText
+              }
+            }
+        }
+        `
   );
-  const data = await res.json();
 
   return (
-    <main className="container mx-auto">
+    <main className="container mx-auto px-5">
       {/* Banner Component */}
       <section>
         <div className="relative mb-24 rounded-xl dark:shadow-zinc-800 shadow-lg">
           <Image
-            src={data.posts[0].coverImage.url}
+            src={posts[0].coverImage.url}
             alt="Main Banner Image"
             width={1216}
             height={600}
             className="rounded-xl w-full"
+            priority
           />
           <div className="absolute -bottom-16 left-4 md:left-14 rounded-xl p-4 md:p-10  w-10/12 md:w-7/12 lg:w-6/12 shadow-xl bg-zinc-50 dark:bg-zinc-900 dark:shadow-zinc-800 ">
             <Chip color="primary" className="mb-4">
@@ -51,10 +70,10 @@ export default async function Home() {
             <h3>
               <Link
                 className="font-semibold text-xl md:text-2xl lg:text-4xl leading-5 md:leading-10 group transition-all duration-300 ease-in-out"
-                href={data.posts[0].slug}
+                href={posts[0].slug}
               >
                 <span className="bg-left-bottom bg-gradient-to-r from-blue-600 to-purple-600 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
-                  {data.posts[0].title}
+                  {posts[0].title}
                 </span>
               </Link>
             </h3>
@@ -75,7 +94,7 @@ export default async function Home() {
                 </div>
               </div>
               <p className="text-base-content/60 text-xs md:text-base">
-                {new Date(data.posts[0].date).toLocaleDateString("en-GB", {
+                {new Date(posts[0].date).toLocaleDateString("en-GB", {
                   day: "numeric",
                   month: "long",
                   year: "numeric",
@@ -95,7 +114,7 @@ export default async function Home() {
           Latest Posts
         </h3>
         <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {data.posts.map((post: Post, index: number) => {
+          {posts.map((post: Post, index: number) => {
             return (
               <PostCard
                 key={index}
