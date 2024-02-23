@@ -13,13 +13,10 @@ interface Post {
   title: string;
   author: {
     name: string;
-    social: {
-      name: string;
-      url: string;
-    };
-    picture: {
-      url: string;
-    };
+    twitterName: string;
+    twitterProfile: string;
+    twitterProfileLink: string;
+    picture: { url: string };
   };
   category: string;
 }
@@ -54,7 +51,7 @@ const PostCard = ({ post }: { post: Post }) => {
           <User
             name={author.name}
             description={
-              <Link href={author.social.url}>{author.social.name}</Link>
+              <Link href={author.twitterProfileLink}>{author.twitterName}</Link>
             }
             avatarProps={{
               src: author.picture.url,

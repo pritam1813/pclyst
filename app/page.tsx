@@ -4,7 +4,7 @@ import { Button, Chip, User } from "@nextui-org/react";
 import hygraph from "./lib/hygraph";
 import PostCard from "./components/PostCard";
 
-interface Post {
+export interface Post {
   slug: string;
   coverImage: {
     url: string;
@@ -14,13 +14,10 @@ interface Post {
   title: string;
   author: {
     name: string;
-    social: {
-      name: string;
-      url: string;
-    };
-    picture: {
-      url: string;
-    };
+    twitterName: string;
+    twitterProfile: string;
+    twitterProfileLink: string;
+    picture: { url: string };
   };
   category: string;
 }
@@ -37,6 +34,8 @@ export default async function Home() {
               date
               author {
                 name
+                twitterName
+                twitterProfileLink
                 picture {
                   url
                 }
@@ -45,6 +44,7 @@ export default async function Home() {
                 url
                 altText
               }
+              category
             }
         }
         `
@@ -57,7 +57,7 @@ export default async function Home() {
         <div className="relative mb-24 rounded-xl dark:shadow-zinc-800 shadow-lg">
           <Image
             src={posts[0].coverImage.url}
-            alt="Main Banner Image"
+            alt={posts[0].coverImage.altText}
             width={1216}
             height={600}
             className="rounded-xl w-full"
@@ -65,7 +65,7 @@ export default async function Home() {
           />
           <div className="absolute -bottom-16 left-4 md:left-14 rounded-xl p-4 md:p-10  w-10/12 md:w-7/12 lg:w-6/12 shadow-xl bg-zinc-50 dark:bg-zinc-900 dark:shadow-zinc-800 ">
             <Chip color="primary" className="mb-4">
-              Technology
+              {posts[0].category}
             </Chip>
             <h3>
               <Link
@@ -81,14 +81,14 @@ export default async function Home() {
               <div className=" flex items-center gap-3">
                 <div className="avatar">
                   <User
-                    name="Junior Garcia"
+                    name={posts[0].author.name}
                     description={
-                      <Link href="https://twitter.com/jrgarciadev">
-                        @jrgarciadev
+                      <Link href={posts[0].author.twitterProfileLink}>
+                        {posts[0].author.twitterName}
                       </Link>
                     }
                     avatarProps={{
-                      src: "https://avatars.githubusercontent.com/u/30373425?v=4",
+                      src: posts[0].author.picture.url,
                     }}
                   />
                 </div>
@@ -115,31 +115,7 @@ export default async function Home() {
         </h3>
         <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {posts.map((post: Post, index: number) => {
-            return (
-              <PostCard
-                key={index}
-                post={{
-                  title: post.title,
-                  slug: post.slug,
-                  coverImage: {
-                    url: post.coverImage.url,
-                    altText: "Temp Alttext",
-                  },
-                  author: {
-                    name: "John Doe",
-                    social: {
-                      url: "https://x.com",
-                      name: "@Johndoe",
-                    },
-                    picture: {
-                      url: "https://media.graphassets.com/E0UoOkHpTuuZjJ3qsFOl",
-                    },
-                  },
-                  date: post.date,
-                  category: "Technology",
-                }}
-              />
-            );
+            return <PostCard key={index} post={post} />;
           })}
         </div>
         <div className="flex items-center justify-center w-full mt-8">

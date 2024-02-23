@@ -5,11 +5,38 @@ import Image from "next/image";
 import Link from "next/link";
 import PostCard from "../components/PostCard";
 import AdvertisementBanner from "../components/AdvertisementBanner";
+import hygraph from "../lib/hygraph";
+import { Post } from "../page";
 
-const Posts = () => {
+const Posts = async () => {
+  const { posts }: { posts: Post[] } = await hygraph.request(
+    `
+        {
+          posts(orderBy: createdAt_DESC) {
+              slug
+              title
+              date
+              author {
+                name
+                twitterName
+                twitterProfileLink
+                picture {
+                  url
+                }
+              }
+              coverImage {
+                url
+                altText
+              }
+              category
+            }
+        }
+        `
+  );
+
   return (
     <main>
-      <div className="container mx-auto">
+      <div className="container mx-auto px-5">
         {/* Page Header Section */}
         <section>
           <div className="py-4 text-center">
@@ -30,24 +57,23 @@ const Posts = () => {
           <Card className="relative">
             <figure>
               <Image
-                src="/pexels-luis-quintero-2148220.jpg"
-                alt="All Posts page banner image"
+                src={posts[0].coverImage.url}
+                alt={posts[0].coverImage.altText}
                 width={1216}
                 height={450}
-                className="w-fit"
+                className="w-full"
               />
             </figure>
             <CardBody className="p-2 md:p-10 absolute bottom-0 w-full md:w-8/12 z-20 text-zinc-400">
               <Chip color="primary" className="mb-2 md:mb-4">
-                Technology
+                {posts[0].category}
               </Chip>
 
               <Link
                 href="#"
                 className="text-xl md:text-2xl lg:text-4xl text-zinc-300 hover:text-white transition-transform duration-500 hover:-translate-y-1 hover:underline"
               >
-                The Impact of Technology on the Workplace: How Technology is
-                Changing
+                {posts[0].title}
               </Link>
 
               {/* <div className="relative inline-block group text-4xl">
@@ -67,20 +93,24 @@ const Posts = () => {
                 <div className=" flex items-center gap-3">
                   <div className="avatar text-white">
                     <User
-                      name="Junior Garcia"
+                      name={posts[0].author.name}
                       description={
-                        <Link href="https://twitter.com/jrgarciadev">
-                          @jrgarciadev
+                        <Link href={posts[0].author.twitterProfileLink}>
+                          {posts[0].author.twitterName}
                         </Link>
                       }
                       avatarProps={{
-                        src: "https://avatars.githubusercontent.com/u/30373425?v=4",
+                        src: posts[0].author.picture.url,
                       }}
                     />
                   </div>
                 </div>
                 <p className="text-white text-xs md:text-base">
-                  August 20, 2022
+                  {new Date(posts[0].date).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
                 </p>
               </div>
             </CardBody>
@@ -92,8 +122,8 @@ const Posts = () => {
         {/* PostCards List*/}
         <section className="my-20">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item: any) => (
-              <PostCard key={item} />
+            {posts.map((post) => (
+              <PostCard key={post.slug} post={post} />
             ))}
           </div>
           <div className="flex items-center justify-center w-full mt-8">
