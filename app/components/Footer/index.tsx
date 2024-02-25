@@ -113,12 +113,12 @@ const Footer = () => {
             >
               Terms of Use
             </a>
-            <a
+            <Link
               className="text-base border-r border-base-content/10 pr-4  hover:text-primary transition hover:duration-300"
-              href="/"
+              href="/privacypolicy"
             >
               Privacy Policy
-            </a>
+            </Link>
             <a
               className="text-base hover:text-primary transition hover:duration-300"
               href="/"
