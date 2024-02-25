@@ -5,27 +5,10 @@ import React from "react";
 import { RichText } from "@graphcms/rich-text-react-renderer";
 import { notFound } from "next/navigation";
 import hygraph from "../lib/hygraph";
+import { Post } from "@/app/types/Posts";
 
 interface PostSlug {
   slug: string;
-}
-
-interface Post {
-  title: string;
-  content: { json: any };
-  author: {
-    name: string;
-    twitterName: string;
-    twitterProfile: string;
-    twitterProfileLink: string;
-    picture: { url: string };
-  };
-  coverImage: {
-    url: string;
-    altText: string;
-  };
-  date: string;
-  category: string;
 }
 
 interface postSeo {

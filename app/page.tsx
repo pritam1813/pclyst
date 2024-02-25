@@ -3,24 +3,7 @@ import Image from "next/image";
 import { Button, Chip, User } from "@nextui-org/react";
 import hygraph from "./lib/hygraph";
 import PostCard from "./components/PostCard";
-
-export interface Post {
-  slug: string;
-  coverImage: {
-    url: string;
-    altText: string;
-  };
-  date: string;
-  title: string;
-  author: {
-    name: string;
-    twitterName: string;
-    twitterProfile: string;
-    twitterProfileLink: string;
-    picture: { url: string };
-  };
-  category: string;
-}
+import { Post } from "@/app/types/Posts";
 
 export default async function Home() {
   let postsLimit = 6;

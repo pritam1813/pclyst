@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import PostCard from "../components/PostCard";
 import AdvertisementBanner from "../components/AdvertisementBanner";
-import { Post } from "../page";
+import { Post } from "@/app/types/Posts";
 
 const Posts = () => {
   const [fetchedPosts, setFetchedPosts] = useState<Post[]>([]);
