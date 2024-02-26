@@ -1,30 +1,29 @@
 import React from "react";
+import { Page } from "../types";
 import hygraph from "../lib/hygraph";
 import { RichText } from "@graphcms/rich-text-react-renderer";
 import { Link } from "@nextui-org/react";
-import { Page } from "../types";
 
-const PrivacyPolicy = async () => {
+const CookiePolicy = async () => {
   const { page }: { page: Page } = await hygraph.request(
     `
-    {
-      page(where: {slug: "privacypolicy"}) {
-        content {
-          raw
-        }
-      }
-    }
-    `
+            {
+              page(where: {slug: "cookiepolicy"}) {
+                content {
+                  raw
+                }
+              }
+            }
+            `
   );
 
   const { content } = page;
-
   return (
     <main className="container mx-auto px-5">
       {/* Page Header Section */}
       <section>
         <div className="py-4 text-center">
-          <h1 className="text-3xl mb-5">Privacy Policy</h1>
+          <h1 className="text-3xl mb-5">Cookie Policy</h1>
         </div>
       </section>
 
@@ -64,4 +63,4 @@ const PrivacyPolicy = async () => {
   );
 };
 
-export default PrivacyPolicy;
+export default CookiePolicy;

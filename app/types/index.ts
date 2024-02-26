@@ -16,3 +16,7 @@ export interface Post {
   };
   category: string;
 }
+
+export interface Page {
+  content: { raw: any };
+}

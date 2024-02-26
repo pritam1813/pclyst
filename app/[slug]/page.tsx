@@ -5,7 +5,7 @@ import React from "react";
 import { RichText } from "@graphcms/rich-text-react-renderer";
 import { notFound } from "next/navigation";
 import hygraph from "../lib/hygraph";
-import { Post } from "@/app/types/Posts";
+import { Post } from "@/app/types";
 
 interface PostSlug {
   slug: string;
@@ -127,17 +127,31 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
 
             <div className="mt-3 md:mt-6 flex justify-between items-center gap-5">
               <div className="flex items-center gap-3">
-                <User
-                  name={author.name}
-                  description={
-                    <Link href={author.twitterProfileLink}>
-                      {author.twitterName}
-                    </Link>
-                  }
-                  avatarProps={{
-                    src: author.picture.url,
-                  }}
-                />
+                {author == null ? (
+                  <User
+                    name="Pritam Dhara"
+                    description={
+                      <Link href="https://twitter.com/pritam1813">
+                        @pritam1813
+                      </Link>
+                    }
+                    avatarProps={{
+                      src: "https://media.graphassets.com/hhtFCOr7S6CZc7MiEH0n",
+                    }}
+                  />
+                ) : (
+                  <User
+                    name={author.name}
+                    description={
+                      <Link href={author.twitterProfileLink}>
+                        {author.twitterName}
+                      </Link>
+                    }
+                    avatarProps={{
+                      src: author.picture.url,
+                    }}
+                  />
+                )}
               </div>
               <p className="text-xs md:text-sm">
                 {new Date(date).toLocaleDateString("en-GB", {

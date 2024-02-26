@@ -48,15 +48,30 @@ const PostCard = ({ post }: { post: Post }) => {
           </h3>
         </div>
         <CardFooter className="justify-between">
-          <User
-            name={author.name}
-            description={
-              <Link href={author.twitterProfileLink}>{author.twitterName}</Link>
-            }
-            avatarProps={{
-              src: author.picture.url,
-            }}
-          />
+          {author == null ? (
+            <User
+              name="Pritam Dhara"
+              description={
+                <Link href="https://twitter.com/pritam1813">@pritam1813</Link>
+              }
+              avatarProps={{
+                src: "https://media.graphassets.com/hhtFCOr7S6CZc7MiEH0n",
+              }}
+            />
+          ) : (
+            <User
+              name={author.name}
+              description={
+                <Link href={author.twitterProfileLink}>
+                  {author.twitterName}
+                </Link>
+              }
+              avatarProps={{
+                src: author.picture.url,
+              }}
+            />
+          )}
+
           <p className="text-base-content/60 text-xs md:text-base">
             {new Date(date).toLocaleDateString("en-GB", {
               day: "numeric",

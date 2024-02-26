@@ -3,6 +3,13 @@ import Link from "next/link";
 import NewsletterForm from "./NewsletterForm";
 import { Divider } from "@nextui-org/react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebookF,
+  faInstagram,
+  faXTwitter,
+} from "@fortawesome/free-brands-svg-icons";
+
 const Footer = () => {
   const quickLinks = [
     { name: "Home", path: "/" },
@@ -13,11 +20,17 @@ const Footer = () => {
   ];
 
   const categories = [
-    { name: "Desktops", path: "/desktop" },
-    { name: "Laptops", path: "/laptop" },
-    { name: "Gaming", path: "/Gaming" },
-    { name: "Smartphones", path: "/smartphones" },
-    { name: "Softwares", path: "/softwares" },
+    { name: "Desktops", path: "/posts/category/desktops" },
+    { name: "Laptops", path: "/posts/category/laptops" },
+    { name: "Gaming", path: "/posts/category/gaming" },
+    { name: "Smartphones", path: "/posts/category/smartphones" },
+    { name: "Softwares", path: "/posts/category/softwares" },
+  ];
+
+  const socials = [
+    { icon: faFacebookF, link: "https://www.facebook.com/pclyst" },
+    { icon: faInstagram, link: "https://instagram.com/pclyst" },
+    { icon: faXTwitter, link: "https://twitter.com/Pclystcom" },
   ];
 
   return (
@@ -27,31 +40,21 @@ const Footer = () => {
           <div className="col-span-12 lg:col-span-3">
             <h5 className="text-lg font-semibold text-base-content">Pclyst</h5>
             <p className="mt-3 text-base text-base-content/70 mb-6">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam
+              We will help you make informed decisions and get the most out of
+              your devices. Follow Pclyst and stay updated on the latest trends
+              and innovations in the tech world.
             </p>
-            <div>
-              <a
-                href="mailto:info@jstemplate.net"
-                className="font-semibold text-base-content text-base"
-              >
-                Email :{" "}
-                <span className="text-base-content/70 font-normal hover:text-primary hover:duration-300 transition">
-                  info@jstemplate.net
-                </span>
-              </a>
-            </div>
-            <div className="mt-1">
-              <a
-                href="tel:880123456789"
-                className="font-semibold text-base-content text-base"
-              >
-                Phone :{" "}
-                <span className="text-base-content/70 font-normal hover:text-primary hover:duration-300 transition">
-                  880 123 456 789
-                </span>
-              </a>
+            <div className="flex gap-4">
+              {socials.map((item, index) => (
+                <Link href={item.link} key={index}>
+                  <FontAwesomeIcon
+                    icon={item.icon}
+                    className={`${
+                      item.icon == faFacebookF ? "w-3" : "w-5"
+                    } transition ease-in-out hover:-translate-y-1 hover:scale-110`}
+                  />
+                </Link>
+              ))}
             </div>
           </div>
           <div className="flex justify-between lg:justify-center lg:gap-20 col-span-12 lg:col-span-5">
@@ -107,12 +110,12 @@ const Footer = () => {
             </div>
           </div>
           <div className="flex items-center gap-4 text-base-content/70">
-            <a
+            <Link
               className="text-base border-r border-base-content/10 pr-4 hover:text-primary transition hover:duration-300"
-              href="/"
+              href="/terms"
             >
               Terms of Use
-            </a>
+            </Link>
             <Link
               className="text-base border-r border-base-content/10 pr-4  hover:text-primary transition hover:duration-300"
               href="/privacypolicy"
@@ -121,7 +124,7 @@ const Footer = () => {
             </Link>
             <a
               className="text-base hover:text-primary transition hover:duration-300"
-              href="/"
+              href="/cookiepolicy"
             >
               Cookie Policy
             </a>
