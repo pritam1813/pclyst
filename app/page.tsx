@@ -3,7 +3,8 @@ import Image from "next/image";
 import { Button, Chip, User } from "@nextui-org/react";
 import hygraph from "./lib/hygraph";
 import PostCard from "./components/PostCard";
-import { Post } from "@/app/types/Posts";
+import { Post } from "@/app/types";
+import AdvertisementBanner from "./components/AdvertisementBanner";
 
 export default async function Home() {
   let postsLimit = 6;
@@ -114,7 +115,9 @@ export default async function Home() {
       </section>
 
       {/* Advertisement Component */}
-      <section className="mb-24">{/* <Advertisement /> */}</section>
+      <section className="mb-24">
+        <AdvertisementBanner />
+      </section>
     </main>
   );
 }

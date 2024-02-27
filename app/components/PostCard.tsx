@@ -41,7 +41,7 @@ const PostCard = ({ post }: { post: Post }) => {
           <h3>
             <Link
               className="text-base-content hover:text-primary transition-all duration-300 ease-in-out font-semibold text-lg md:text-xl lg:text-2xl mt-2"
-              href={`/${slug}`}
+              href={`/posts/${slug}`}
             >
               {title}
             </Link>

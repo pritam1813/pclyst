@@ -122,12 +122,12 @@ const Footer = () => {
             >
               Privacy Policy
             </Link>
-            <a
+            <Link
               className="text-base hover:text-primary transition hover:duration-300"
               href="/cookiepolicy"
             >
               Cookie Policy
-            </a>
+            </Link>
           </div>
         </div>
       </div>

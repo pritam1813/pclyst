@@ -1,7 +1,7 @@
 import React from "react";
 import hygraph from "@/app/lib/hygraph";
 import { notFound } from "next/navigation";
-import { Post } from "@/app/types/Posts";
+import { Post } from "@/app/types";
 import BreadCrumbs from "@/app/components/BreadCrumbs";
 import PostCard from "@/app/components/PostCard";
 import AdvertisementBanner from "@/app/components/AdvertisementBanner";

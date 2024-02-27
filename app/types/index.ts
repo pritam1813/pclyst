@@ -18,5 +18,15 @@ export interface Post {
 }
 
 export interface Page {
+  title: string;
   content: { raw: any };
+}
+
+export interface PageSlug {
+  slug: string;
+}
+
+export interface PageMetaData {
+  title: string;
+  subtitle: string;
 }
