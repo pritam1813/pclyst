@@ -14,7 +14,7 @@ const Posts = () => {
   const [loadMoreDisabled, setLoadMoreDisabled] = useState(false);
 
   const loadMorePosts = async () => {
-    const posts: Post[] = await fetch(`/api/posts?offset=${offset}&limit=9`, {
+    const posts: Post[] = await fetch(`/api/posts?offset=${offset}&limit=3`, {
       method: "POST",
     }).then((res) => res.json());
 
@@ -22,7 +22,7 @@ const Posts = () => {
       setLoadMoreDisabled(true);
     }
     setFetchedPosts([...fetchedPosts, ...posts]);
-    setOffset(offset + 9);
+    setOffset(offset + 3);
   };
 
   useEffect(() => {

@@ -5,7 +5,6 @@ import React from "react";
 import { RichText } from "@graphcms/rich-text-react-renderer";
 import { notFound } from "next/navigation";
 import hygraph from "@/app/lib/hygraph";
-import { Post } from "@/app/types";
 
 interface PostSlug {
   slug: string;
@@ -38,76 +37,50 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }) {
-  const { post }: { post: postSeo } = await hygraph.request(
-    `
-    {
-      post(where: {slug: "${params.slug}"}) {
-        seoOverride {
-          title
-          description
-          image {
-            url
-          }
-        }
-      }
+  try {
+    const data = await fetch(
+      `${process.env.VERCEL_URL}/api/posts/${params.slug}`,
+      { method: "POST" }
+    );
+    const { post } = await data.json();
+    let title = "Pclyst";
+    let description = "Post not found. 404 error.";
+    let ogImageUrl = "https://media.graphassets.com/ZqUATlcgTCyLQCWQN21n";
+
+    if (post) {
+      title = post.seoOverride.title;
+      description = post.seoOverride.description;
+      ogImageUrl = post.seoOverride.image.url;
     }
-    `
-  );
-  let title = "Pclyst";
-  let description = "Post not found. 404 error.";
-  let ogImageUrl = "https://media.graphassets.com/ZqUATlcgTCyLQCWQN21n";
 
-  if (post) {
-    title = post.seoOverride.title;
-    description = post.seoOverride.description;
-    ogImageUrl = post.seoOverride.image.url;
-  }
-
-  return {
-    metadataBase: new URL(`${process.env.VERCEL_URL}`),
-    title,
-    description,
-    openGraph: {
+    return {
+      metadataBase: new URL(`${process.env.VERCEL_URL}`),
       title,
       description,
-      url: `${process.env.VERCEL_URL}/${params.slug}`,
-      siteName: "Pclyst",
-      images: [
-        {
-          url: ogImageUrl,
-        },
-      ],
-    },
-  };
+      openGraph: {
+        title,
+        description,
+        url: `${process.env.VERCEL_URL}/${params.slug}`,
+        siteName: "Pclyst",
+        images: [
+          {
+            url: ogImageUrl,
+          },
+        ],
+      },
+    };
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const SinglePost = async ({ params }: { params: { slug: string } }) => {
-  const { post }: { post: Post } = await hygraph.request(
-    `{
-      post(where: {slug: "${params.slug}"}) {
-        coverImage {
-          url
-          altText
-        }
-        date
-        content {
-          json
-        }
-        author {
-          name
-          twitterName
-          twitterProfileLink
-          picture {
-            url
-          }
-        }
-        title
-        category
-      }
-    }`
+  const data = await fetch(
+    `${process.env.VERCEL_URL}/api/posts/${params.slug}`,
+    { method: "POST" }
   );
-
-  if (!post) {
+  const { post } = await data.json();
+  if (!post || post === undefined) {
     notFound();
   }
   const { title, date, coverImage, content, author, category } = post;
@@ -242,4 +215,5 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
   );
 };
 
+export const dynamic = "force-dynamic";
 export default SinglePost;

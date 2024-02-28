@@ -11,7 +11,10 @@ interface ResponseMessage {
 
 const NewsletterForm = () => {
   const [value, setValue] = useState("");
-  const [responseMessage, setResponseMessage] = useState<ResponseMessage>();
+  const [responseMessage, setResponseMessage] = useState<ResponseMessage>({
+    status: 0,
+    message: "",
+  });
   const [loading, setLoading] = useState(false);
   const [validEmail, setValidEmail] = useState(true);
 

@@ -7,6 +7,11 @@ export interface Post {
   date: string;
   title: string;
   content: { json: any };
+  seoOverride: {
+    title: string;
+    description: string;
+    image: { url: string };
+  };
   author: {
     name: string;
     twitterName: string;
