@@ -20,6 +20,7 @@ const ThemeSwitcher = () => {
     <Switch
       defaultSelected={theme === "dark"}
       size="md"
+      aria-label="Toggle Dark Mode"
       thumbIcon={({ isSelected, className }) =>
         isSelected ? (
           <SunIcon className={className} />

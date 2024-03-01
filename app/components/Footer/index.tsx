@@ -28,9 +28,21 @@ const Footer = () => {
   ];
 
   const socials = [
-    { icon: faFacebookF, link: "https://www.facebook.com/pclyst" },
-    { icon: faInstagram, link: "https://instagram.com/pclyst" },
-    { icon: faXTwitter, link: "https://twitter.com/Pclystcom" },
+    {
+      name: "Facebook",
+      icon: faFacebookF,
+      link: "https://www.facebook.com/pclyst",
+    },
+    {
+      name: "Instagram",
+      icon: faInstagram,
+      link: "https://instagram.com/pclyst",
+    },
+    {
+      name: "Twitter",
+      icon: faXTwitter,
+      link: "https://twitter.com/Pclystcom",
+    },
   ];
 
   return (
@@ -38,7 +50,7 @@ const Footer = () => {
       <div className="container mx-auto max-w-[1216px]">
         <div className="grid grid-cols-12 gap-5 py-12">
           <div className="col-span-12 lg:col-span-3">
-            <h5 className="text-lg font-semibold text-base-content">Pclyst</h5>
+            <p className="text-lg font-semibold text-base-content">Pclyst</p>
             <p className="mt-3 text-base text-base-content/70 mb-6">
               We will help you make informed decisions and get the most out of
               your devices. Follow Pclyst and stay updated on the latest trends
@@ -46,7 +58,11 @@ const Footer = () => {
             </p>
             <div className="flex gap-4">
               {socials.map((item, index) => (
-                <Link href={item.link} key={index}>
+                <Link
+                  href={item.link}
+                  key={index}
+                  aria-label={`${item.name} Link of Pclyst`}
+                >
                   <FontAwesomeIcon
                     icon={item.icon}
                     className={`${
@@ -59,9 +75,9 @@ const Footer = () => {
           </div>
           <div className="flex justify-between lg:justify-center lg:gap-20 col-span-12 lg:col-span-5">
             <div>
-              <h5 className="text-base-content text-lg font-semibold font-sans">
+              <p className="text-base-content text-lg font-semibold font-sans">
                 Quick Link
-              </h5>
+              </p>
               <div className="flex flex-col gap-y-2 mt-6">
                 {quickLinks.map((link, index) => (
                   <div key={index}>
@@ -76,9 +92,9 @@ const Footer = () => {
               </div>
             </div>
             <div>
-              <h5 className="text-base-content text-lg font-semibold font-sans">
+              <p className="text-base-content text-lg font-semibold font-sans">
                 Category
-              </h5>
+              </p>
               <div className="flex flex-col gap-y-2 mt-6">
                 {categories.map((category, index) => (
                   <div key={index}>

@@ -55,7 +55,7 @@ const PostCard = ({ post }: { post: Post }) => {
                 <Link href="https://twitter.com/pritam1813">@pritam1813</Link>
               }
               avatarProps={{
-                src: "https://media.graphassets.com/hhtFCOr7S6CZc7MiEH0n",
+                src: "https://media.graphassets.com/ja7UUyf2R4YaUxNescvw",
               }}
             />
           ) : (
