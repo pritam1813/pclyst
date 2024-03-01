@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![Nextjsbadge](https://img.shields.io/badge/Next.js-000000.svg?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![graphqlbadge](https://img.shields.io/badge/GraphQL-E10098.svg?style=for-the-badge&logo=GraphQL&logoColor=white)
+![nextuibadge](https://img.shields.io/badge/NextUI-000000.svg?style=for-the-badge&logo=NextUI&logoColor=white)
+![Tailwindcssbadge](https://img.shields.io/badge/Tailwind%20CSS-06B6D4.svg?style=for-the-badge&logo=Tailwind-CSS&logoColor=white)
+# PCLYST
+Pclyst is a cutting-edge blog that covers everything related to PCs, Games, Smartphones and other cool gadgets. Whether you are looking for honest reviews, in-depth comparisons, breaking news, or expert tips, Pclyst has got you covered. Our team of passionate writers and tech enthusiasts are always on the lookout for the latest trends and innovations in the digital world. Join us and discover the best of technology with Pclyst!
 
-## Getting Started
+## TECH USED
+- [Next JS](https://nextjs.org/)
+- [Next UI](https://nextui.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Hygraph CMS](https://hygraph.com/)
 
-First, run the development server:
+## Local Build
+To run the project locally or deploy it on vercel, copy the contents of `.env.example` file to `.env` file or `.env.local` file. A hygraph account with a blog project is required. The project should have the following Schema:-
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
+### 1. Post
+  - title : (String, Single Line text, unique)
+  - slug : (String, Single Line text, unique)
+  - date : (Date)
+  - exerpt : (String) 
+  - coverImage : (Asset, Two way referenced)
+  - content : (RichText)
+  - author : (Author, Two way reference)
+  - seoOverride : (SeoOverride, Basic)
+  - category : (String, Single Line text)
+### 2. Page
+  - title : (String, Single Line text, unique)
+  - slug : (String, Single Line text, unique)
+  - content : (RichText)
+### 3. Newsletter Subscribers
+  - email : (String, Single Line text, unique)
+
+> [!NOTE]
+> All the schemas mentioned above have respective case sensitive API ID. If any of the field name / type is changed, the respective graphql query / mutation will be needed to be changed as well.
+
+Creating a Permanent auth token as per [Hygraph Documentation](https://hygraph.com/docs/api-reference/basics/permissions#permanent-auth-tokens-with-specific-models) is neccessary to secure the mutation  for the newsletter subscribers schema.
+
+To Start the dev server run
+```
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Snaps
+![Full Size Homepage Screenshot in dark mode](public/snaps/Full%20Size%20Screenshot%20Dark.png)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+![Full Size Homepage Screenshot in Light mode](public/snaps/Full%20Size%20Screenshot%20Light.png)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+![Single post page](public/snaps/Single%20Page%20Screenshot.png)
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## LICENSE
+This project is licensed under the [MIT License](LICENSE.md)
