@@ -54,7 +54,7 @@ Main deployment - https://pclyst.com
  OR
 Deploy yourself
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fpritam1813%2Fpclyst&env=HYGRAPH_ENDPOINT,VERCEL_URL,NEWSLETTER_API_TOKEN,MANAGEMENT_ENDPOINT)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fpritam1813%2Fpclyst&env=HYGRAPH_ENDPOINT,BASE_URL,NEWSLETTER_API_TOKEN,MANAGEMENT_ENDPOINT)
 
 ## LICENSE
 This project is licensed under the [MIT License](LICENSE.md)

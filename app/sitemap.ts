@@ -27,18 +27,18 @@ const generateSitemapObjects = async () => {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     {
-      url: `${process.env.VERCEL_URL}`,
+      url: `${process.env.BASE_URL}`,
     },
     {
-      url: `${process.env.VERCEL_URL}/posts`,
+      url: `${process.env.BASE_URL}/posts`,
       changeFrequency: "weekly",
     },
     ...(await generateSitemapObjects()).posts.map((post) => ({
-      url: `${process.env.VERCEL_URL}/posts/${post.slug}`,
+      url: `${process.env.BASE_URL}/posts/${post.slug}`,
       lastmod: post.updatedAt,
     })),
     ...(await generateSitemapObjects()).pages.map((page) => ({
-      url: `${process.env.VERCEL_URL}/${page.slug}`,
+      url: `${process.env.BASE_URL}/${page.slug}`,
       lastmod: page.updatedAt,
     })),
   ];

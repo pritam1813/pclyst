@@ -39,13 +39,13 @@ export async function generateMetadata({
 }) {
   try {
     const data = await fetch(
-      `${process.env.VERCEL_URL}/api/posts/${params.slug}`,
+      `${process.env.BASE_URL}/api/posts/${params.slug}`,
       { method: "POST" }
     );
     const { post } = await data.json();
     let title = "Pclyst";
     let description = "Post not found. 404 error.";
-    let ogImageUrl = "https://media.graphassets.com/ZqUATlcgTCyLQCWQN21n";
+    let ogImageUrl = "media.graphassets.com/ZqUATlcgTCyLQCWQN21n";
 
     if (post) {
       title = post.seoOverride.title;
@@ -54,13 +54,13 @@ export async function generateMetadata({
     }
 
     return {
-      metadataBase: new URL(`${process.env.VERCEL_URL}`),
+      metadataBase: new URL(`${process.env.BASE_URL}`),
       title,
       description,
       openGraph: {
         title,
         description,
-        url: `${process.env.VERCEL_URL}/${params.slug}`,
+        url: `${process.env.BASE_URL}/${params.slug}`,
         siteName: "Pclyst",
         images: [
           {
@@ -75,10 +75,9 @@ export async function generateMetadata({
 }
 
 const SinglePost = async ({ params }: { params: { slug: string } }) => {
-  const data = await fetch(
-    `${process.env.VERCEL_URL}/api/posts/${params.slug}`,
-    { method: "POST" }
-  );
+  const data = await fetch(`${process.env.BASE_URL}/api/posts/${params.slug}`, {
+    method: "POST",
+  });
   const { post } = await data.json();
   if (!post || post === undefined) {
     notFound();

@@ -45,7 +45,7 @@ export async function generateMetadata({
   }
 
   return {
-    metadataBase: new URL(`${process.env.VERCEL_URL}`),
+    metadataBase: new URL(`${process.env.BASE_URL}`),
     title,
     description,
   };
