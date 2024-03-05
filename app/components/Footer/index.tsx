@@ -1,14 +1,17 @@
 import React from "react";
 import Link from "next/link";
-import NewsletterForm from "./NewsletterForm";
 import { Divider } from "@nextui-org/react";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebookF,
   faInstagram,
   faXTwitter,
 } from "@fortawesome/free-brands-svg-icons";
+import dynamic from "next/dynamic";
+
+const NewsletterForm = dynamic(() => import("./NewsletterForm"), {
+  ssr: false,
+});
 
 const Footer = () => {
   const quickLinks = [

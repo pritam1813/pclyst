@@ -1,12 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import BreadCrumbs from "../components/BreadCrumbs";
 import { Button, Card, CardBody, Chip, User } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
 import PostCard from "../components/PostCard";
 import AdvertisementBanner from "../components/AdvertisementBanner";
 import { Post } from "@/app/types";
+import dynamic from "next/dynamic";
+
+const BreadCrumbs = dynamic(() => import("../components/BreadCrumbs"), {
+  ssr: false,
+});
 
 const Posts = () => {
   const [fetchedPosts, setFetchedPosts] = useState<Post[]>([]);

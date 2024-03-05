@@ -2,9 +2,13 @@ import React from "react";
 import hygraph from "@/app/lib/hygraph";
 import { notFound } from "next/navigation";
 import { Post } from "@/app/types";
-import BreadCrumbs from "@/app/components/BreadCrumbs";
 import PostCard from "@/app/components/PostCard";
 import AdvertisementBanner from "@/app/components/AdvertisementBanner";
+import dynamic from "next/dynamic";
+
+const BreadCrumbs = dynamic(() => import("@/app/components/BreadCrumbs"), {
+  ssr: false,
+});
 
 const CategoryWisePosts = async ({
   params,

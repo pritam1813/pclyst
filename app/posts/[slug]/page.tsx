@@ -93,8 +93,12 @@ export async function generateMetadata({
 }
 
 const SinglePost = async ({ params }: { params: { slug: string } }) => {
-  const { post }: { post: Post } = await hygraph.request(
-    `
+  let postContent = null;
+  if (cache[`post/${params.slug}`]) {
+    postContent = cache[`post/${params.slug}`];
+  } else {
+    const { post }: { post: Post } = await hygraph.request(
+      `
           {
             post(where: {slug: "${params.slug}"}) {
               author {
@@ -118,11 +122,14 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
             }
           }
           `
-  );
-  if (!post || post === undefined) {
+    );
+    cache[`post/${params.slug}`] = post;
+    postContent = cache[`post/${params.slug}`];
+  }
+  if (!postContent || postContent === undefined) {
     notFound();
   }
-  const { title, date, coverImage, content, author, category } = post;
+  const { title, date, coverImage, content, author, category } = postContent;
 
   return (
     <main>
@@ -149,6 +156,7 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
                     }
                     avatarProps={{
                       src: "https://media.graphassets.com/hhtFCOr7S6CZc7MiEH0n",
+                      size: "md",
                     }}
                   />
                 ) : (
@@ -190,7 +198,7 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
                 width={800}
                 height={462}
                 priority
-                className="w-full h-full"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </Suspense>
           </div>
@@ -254,5 +262,4 @@ const SinglePost = async ({ params }: { params: { slug: string } }) => {
   );
 };
 
-export const dynamic = "force-dynamic";
 export default SinglePost;

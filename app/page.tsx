@@ -1,10 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Button, Chip, User } from "@nextui-org/react";
+import { Button, Chip, Skeleton, User } from "@nextui-org/react";
 import hygraph from "./lib/hygraph";
-import PostCard from "./components/PostCard";
 import { Post } from "@/app/types";
 import AdvertisementBanner from "./components/AdvertisementBanner";
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
+
+const PostCard = dynamic(() => import("./components/PostCard"));
 
 export default async function Home() {
   let postsLimit = 6;
@@ -39,14 +42,23 @@ export default async function Home() {
       {/* Banner Component */}
       <section>
         <div className="relative mb-24 rounded-xl dark:shadow-zinc-800 shadow-lg">
-          <Image
-            src={posts[0].coverImage.url}
-            alt={posts[0].coverImage.altText}
-            width={1216}
-            height={600}
-            className="rounded-xl w-full"
-            priority
-          />
+          <Suspense
+            fallback={
+              <Skeleton className="rounded-lg">
+                <div className="w-[1216px] h-[600px] rounded-lg bg-default-300"></div>
+              </Skeleton>
+            }
+          >
+            <Image
+              src={posts[0].coverImage.url}
+              alt={posts[0].coverImage.altText}
+              width={1216}
+              height={600}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="rounded-xl w-full"
+              priority
+            />
+          </Suspense>
           <div className="absolute -bottom-16 left-4 md:left-14 rounded-xl p-4 md:p-10  w-10/12 md:w-7/12 lg:w-6/12 shadow-xl bg-zinc-50 dark:bg-zinc-900 dark:shadow-zinc-800 ">
             <Chip color="primary" className="mb-4">
               {posts[0].category}

@@ -1,13 +1,17 @@
 "use client";
 import React, { useState } from "react";
-import MailIcon from "./MailIcon";
 import { Button, Input } from "@nextui-org/react";
 import { z } from "zod";
+import dynamic from "next/dynamic";
 
 interface ResponseMessage {
   status: number;
   message: string;
 }
+
+const MailIcon = dynamic(() => import("./MailIcon"), {
+  ssr: false,
+});
 
 const NewsletterForm = () => {
   const [value, setValue] = useState("");

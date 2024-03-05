@@ -12,7 +12,9 @@ import {
   NavbarMenuItem,
 } from "@nextui-org/react";
 import Link from "next/link";
-import ThemeSwitcher from "../ThemeSwitcher";
+import dynamic from "next/dynamic";
+
+const ThemeSwitcher = dynamic(() => import("../ThemeSwitcher"));
 
 const navMenu = [
   {
