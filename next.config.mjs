@@ -7,7 +7,11 @@ const nextConfig = {
                 hostname:'media.graphassets.com',
             }
         ]
-    }
+    },
+    experimental: {
+        workerThreads: false,
+        cpus: 1
+    },
 };
 
 export default nextConfig;
