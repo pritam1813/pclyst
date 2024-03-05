@@ -117,9 +117,9 @@ const Footer = () => {
         <div className="flex flex-col gap-4 md:gap-0 md:flex-row items-center justify-between py-2 bg-base-200 ">
           <div className="flex items-center gap-2.5">
             <div>
-              <h4 className="text-xl text-base-content font-sans">
+              <p className="text-xl text-base-content font-sans">
                 <strong>PCLYST</strong>
-              </h4>
+              </p>
               <p className="mt-0.5 text-base-content/70 text-base">
                 © {new Date().getFullYear()}. All Rights Reserved.
               </p>
