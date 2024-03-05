@@ -5,20 +5,20 @@ import React from "react";
 import { RichText } from "@graphcms/rich-text-react-renderer";
 import { notFound } from "next/navigation";
 import hygraph from "@/app/lib/hygraph";
+import { Post, PostSeo } from "@/app/types";
 
 interface PostSlug {
   slug: string;
 }
 
-interface postSeo {
-  seoOverride: {
-    title: string;
-    description: string;
-    image: { url: string };
-  };
-}
+const cache: {
+  [key: string]: any;
+} = {};
 
 export async function generateStaticParams() {
+  if (cache["posts"]) {
+    return cache["posts"];
+  }
   const { posts }: { posts: PostSlug[] } = await hygraph.request(
     `{
       posts(orderBy: createdAt_DESC) {
@@ -27,9 +27,11 @@ export async function generateStaticParams() {
     }`
   );
 
-  return posts.map((post) => ({
+  cache["posts"] = posts.map((post) => ({
     slug: post.slug,
   }));
+
+  return cache["posts"];
 }
 
 export async function generateMetadata({
@@ -38,11 +40,25 @@ export async function generateMetadata({
   params: { slug: string };
 }) {
   try {
-    const data = await fetch(
-      `${process.env.BASE_URL}/api/posts/${params.slug}`,
-      { method: "POST" }
+    if (cache[params.slug]) {
+      return cache[params.slug];
+    }
+
+    const { post }: { post: PostSeo } = await hygraph.request(
+      `
+      {
+        post(where: {slug: "${params.slug}"}) {
+          seoOverride {
+            description
+            image {
+              url
+            }
+            title
+          }
+        }
+      }
+      `
     );
-    const { post } = await data.json();
     let title = "Pclyst";
     let description = "Post not found. 404 error.";
     let ogImageUrl = "media.graphassets.com/ZqUATlcgTCyLQCWQN21n";
@@ -53,7 +69,7 @@ export async function generateMetadata({
       ogImageUrl = post.seoOverride.image.url;
     }
 
-    return {
+    cache[params.slug] = {
       metadataBase: new URL(`${process.env.BASE_URL}`),
       title,
       description,
@@ -69,16 +85,40 @@ export async function generateMetadata({
         ],
       },
     };
+
+    return cache[params.slug];
   } catch (error) {
     console.log(error);
   }
 }
 
 const SinglePost = async ({ params }: { params: { slug: string } }) => {
-  const data = await fetch(`${process.env.BASE_URL}/api/posts/${params.slug}`, {
-    method: "POST",
-  });
-  const { post } = await data.json();
+  const { post }: { post: Post } = await hygraph.request(
+    `
+          {
+            post(where: {slug: "${params.slug}"}) {
+              author {
+                name
+                twitterName
+                twitterProfileLink
+                picture {
+                  url
+                }
+              }
+              category
+              content {
+                json
+              }
+              coverImage {
+                altText
+                url
+              }
+              date
+              title
+            }
+          }
+          `
+  );
   if (!post || post === undefined) {
     notFound();
   }

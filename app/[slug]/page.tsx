@@ -5,7 +5,15 @@ import { notFound } from "next/navigation";
 import hygraph from "@/app/lib/hygraph";
 import { Page, PageSlug, PageMetaData } from "@/app/types";
 
+const cache: {
+  [key: string]: any;
+} = {};
+
 export async function generateStaticParams() {
+  if (cache["pages"]) {
+    return cache["pages"];
+  }
+
   const { pages }: { pages: PageSlug[] } = await hygraph.request(
     `
     {
@@ -16,9 +24,12 @@ export async function generateStaticParams() {
     `
   );
 
-  return pages.map((page) => ({
+  // Store the data in the cache
+  cache["pages"] = pages.map((page) => ({
     slug: page.slug,
   }));
+
+  return cache["pages"];
 }
 
 export async function generateMetadata({
@@ -26,6 +37,10 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }) {
+  if (cache[params.slug]) {
+    return cache[params.slug];
+  }
+
   const { page }: { page: PageMetaData } = await hygraph.request(
     `
     {
@@ -44,11 +59,13 @@ export async function generateMetadata({
     description = page.subtitle;
   }
 
-  return {
+  cache[params.slug] = {
     metadataBase: new URL(`${process.env.BASE_URL}`),
     title,
     description,
   };
+
+  return cache[params.slug];
 }
 
 const SinglePage = async ({ params }: { params: { slug: string } }) => {
