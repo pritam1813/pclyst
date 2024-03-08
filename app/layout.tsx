@@ -5,6 +5,7 @@ import Providers from "./providers";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,10 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <GoogleAnalytics gaId="G-XEN101S30G" />
+        <GoogleAnalytics gaId={`${process.env.GOOGLE_ANALYTICS_ID}`} />
         <Providers>
           <Header />
           {children}
+          <Analytics />
           <Footer />
         </Providers>
       </body>
