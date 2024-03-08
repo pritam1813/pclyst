@@ -52,7 +52,7 @@ export async function generateMetadata({
     `
   );
   let title = "Pclyst";
-  let description = "Post not found. 404 error.";
+  let description = "Page not found. 404 error.";
 
   if (page) {
     title = page.title;
@@ -69,21 +69,28 @@ export async function generateMetadata({
 }
 
 const SinglePage = async ({ params }: { params: { slug: string } }) => {
-  const { page }: { page: Page } = await hygraph.request(
-    `{
-      page(where: {slug: "${params.slug}"}) {
-        content {
-          raw
+  let pageContent = null;
+  if (cache[`page/${params.slug}`]) {
+    pageContent = cache[`page/${params.slug}`];
+  } else {
+    const { page }: { page: Page } = await hygraph.request(
+      `{
+        page(where: {slug: "${params.slug}"}) {
+          content {
+            raw
+          }
+          title
         }
-        title
-      }
-    }`
-  );
+      }`
+    );
+    cache[`page/${params.slug}`] = page;
+    pageContent = cache[`page/${params.slug}`];
+  }
 
-  if (!page) {
+  if (!pageContent || pageContent === undefined) {
     notFound();
   }
-  const { title, content } = page;
+  const { title, content } = pageContent;
 
   return (
     <main className="container mx-auto px-5">
