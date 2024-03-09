@@ -84,6 +84,12 @@ export async function generateMetadata({
           },
         ],
       },
+      twitter: {
+        images: {
+          url: ogImageUrl,
+          alt: `Pclyst | ${title}`,
+        },
+      },
     };
 
     return cache[params.slug];

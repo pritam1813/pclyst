@@ -63,6 +63,23 @@ export async function generateMetadata({
     metadataBase: new URL(`${process.env.BASE_URL}`),
     title,
     description,
+    openGraph: {
+      title: `${title} | Pclyst`,
+      description,
+      url: `${process.env.BASE_URL}/${params.slug}`,
+      siteName: "Pclyst",
+      images: [
+        {
+          url: "/opengraph-image.png",
+        },
+      ],
+    },
+    twitter: {
+      images: {
+        url: "/twitter-image.png",
+        alt: `${title}`,
+      },
+    },
   };
 
   return cache[params.slug];

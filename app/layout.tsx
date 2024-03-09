@@ -13,6 +13,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Pclyst",
   description: "PC and Software Reviews",
+  metadataBase: new URL(`${process.env.BASE_URL}`),
 };
 
 export default function RootLayout({
