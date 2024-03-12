@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/generate/titles",
+      "schedule": "0 5 * * 1"
+    }
+  ]
+}
