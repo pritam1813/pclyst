@@ -1,33 +1,52 @@
+interface Image {
+  url: string;
+  altText?: string;
+}
+
+interface Author {
+  name: string;
+  twitterName: string;
+  twitterProfile: string;
+  twitterProfileLink: string;
+  picture: Image;
+}
+
+interface Content {
+  json: any;
+  raw?: any;
+}
+
 export interface Post {
   slug: string;
-  coverImage: {
-    url: string;
-    altText: string;
-  };
+  coverImage: Image;
   date: string;
   title: string;
-  content: { json: any };
-  author: {
-    name: string;
-    twitterName: string;
-    twitterProfile: string;
-    twitterProfileLink: string;
-    picture: { url: string };
-  };
+  content: Content;
+  author: Author;
   category: string;
 }
 
-export interface PostSeo {
-  seoOverride: {
-    title: string;
-    description: string;
-    image: { url: string };
-  };
+export interface BannerImage {
+  coverImageTransformed: Image;
 }
 
-export interface Page {
+export interface HomePagePosts extends Post {
+  posts: Post[];
+  bannerImage: BannerImage[];
+}
+
+interface SeoOverride {
   title: string;
-  content: { raw: any };
+  description: string;
+  image: Image;
+}
+
+export interface PostSeo {
+  seoOverride: SeoOverride;
+}
+
+export interface Page extends Post {
+  content: Content;
 }
 
 export interface PageSlug {

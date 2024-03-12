@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button, Chip, Skeleton, User } from "@nextui-org/react";
 import hygraph from "./lib/hygraph";
-import { Post } from "@/app/types";
+import { HomePagePosts, Post } from "@/app/types";
 import AdvertisementBanner from "./components/AdvertisementBanner";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
@@ -12,7 +12,7 @@ const PostCard = dynamic(() => import("./components/PostCard"));
 export default async function Home() {
   let postsLimit = 6;
 
-  const { posts }: { posts: Post[] } = await hygraph.request(
+  const { posts, bannerImage }: HomePagePosts = await hygraph.request(
     `
         {
           posts(first: ${postsLimit}, orderBy: createdAt_DESC) {
@@ -24,14 +24,22 @@ export default async function Home() {
                 twitterName
                 twitterProfileLink
                 picture {
-                  url
+                  url(
+                    transformation: {document: {output: {format: webp}}, image: {resize: {height: 250, width: 250, fit: clip}}}
+                  )
                 }
               }
               coverImage {
-                url
+                url(transformation: {image: {resize: {height: 240, width: 360, fit: clip}}})
                 altText
               }
               category
+            }
+            bannerImage: posts(first: 1, orderBy: createdAt_DESC){
+              coverImageTransformed: coverImage {
+                url(transformation: {image: {resize: {height: 1216, width: 600, fit: clip}}})
+                altText
+              }
             }
         }
         `
@@ -50,12 +58,11 @@ export default async function Home() {
             }
           >
             <Image
-              src={posts[0].coverImage.url}
-              alt={posts[0].coverImage.altText}
+              src={bannerImage[0].coverImageTransformed.url}
+              alt={bannerImage[0].coverImageTransformed.altText!}
               width={1216}
               height={600}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="rounded-xl w-full"
+              className="rounded-xl w-full h-full"
               priority
             />
           </Suspense>
@@ -85,6 +92,7 @@ export default async function Home() {
                     }
                     avatarProps={{
                       src: posts[0].author.picture.url,
+                      alt: `Author : ${posts[0].author.name}`,
                     }}
                   />
                 </div>

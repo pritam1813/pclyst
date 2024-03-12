@@ -2,24 +2,7 @@ import React from "react";
 import { Card, CardBody, CardFooter, Chip, User } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
-
-interface Post {
-  slug: string;
-  coverImage: {
-    url: string;
-    altText: string;
-  };
-  date: string;
-  title: string;
-  author: {
-    name: string;
-    twitterName: string;
-    twitterProfile: string;
-    twitterProfileLink: string;
-    picture: { url: string };
-  };
-  category: string;
-}
+import { Post } from "@/app/types";
 
 const PostCard = ({ post }: { post: Post }) => {
   const { title, slug, category, coverImage, date, author } = post;
@@ -28,10 +11,10 @@ const PostCard = ({ post }: { post: Post }) => {
       <CardBody className="justify-between">
         <Image
           src={coverImage.url}
-          alt={coverImage.altText}
+          alt={coverImage.altText!}
           width={360}
           height={240}
-          className="rounded-xl w-full h-[240px]"
+          className="rounded-xl w-full h-full"
         />
 
         <div className="pt-6 pb-3 px-2">

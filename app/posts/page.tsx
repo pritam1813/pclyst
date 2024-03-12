@@ -58,7 +58,7 @@ const Posts = () => {
               <figure>
                 <Image
                   src={fetchedPosts[0].coverImage.url}
-                  alt={fetchedPosts[0].coverImage.altText}
+                  alt={fetchedPosts[0].coverImage.altText!}
                   width={1216}
                   height={450}
                   className="w-full"
