@@ -73,7 +73,7 @@ export default async function Home() {
             <h3>
               <Link
                 className="font-semibold text-xl md:text-2xl lg:text-4xl leading-5 md:leading-10 group transition-all duration-300 ease-in-out"
-                href={posts[0].slug}
+                href={`/posts/${posts[0].slug}`}
               >
                 <span className="bg-left-bottom bg-gradient-to-r from-blue-600 to-purple-600 bg-[length:0%_2px] bg-no-repeat group-hover:bg-[length:100%_2px] transition-all duration-500 ease-out">
                   {posts[0].title}
